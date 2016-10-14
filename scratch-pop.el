@@ -81,6 +81,10 @@
 region, the region is yanked to the scratch buffer."
   :group 'emacs)
 
+(defcustom scratch-pop-default-mode nil
+  "When non-nil, scratch-pop will spawn with the specified mode"
+  :group 'scratch-pop)
+
 ;; + backup
 
 (defun scratch-pop-backup-scratches ()
@@ -172,7 +176,10 @@ create new scratch buffers `*scratch2*', `*scratch3*', ... ."
                        (with-selected-window popwin:popup-window
                          (switch-to-buffer (scratch-pop--get-next-scratch))))))
        (define-key km repeat-key cycle-fn)
-       km) t)))
+       km) t))
+  ;; switch to a predefined mode
+  (when (fboundp scratch-pop-default-mode)
+    (funcall scratch-pop-default-mode)))
 
 (provide 'scratch-pop)
 
